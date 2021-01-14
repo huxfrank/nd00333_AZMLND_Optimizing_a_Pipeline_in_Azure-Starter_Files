@@ -9,18 +9,43 @@ from sklearn.preprocessing import OneHotEncoder
 import pandas as pd
 from azureml.core.run import Run
 from azureml.data.dataset_factory import TabularDatasetFactory
-
+    
 # TODO: Create TabularDataset using TabularDatasetFactory
 # Data is located at:
 # "https://automlsamplenotebookdata.blob.core.windows.net/automl-sample-notebook-data/bankmarketing_train.csv"
 
-ds = ### YOUR CODE HERE ###
+web_path = ['https://automlsamplenotebookdata.blob.core.windows.net/automl-sample-notebook-data/bankmarketing_train.csv']
+ds = TabularDatasetFactory.from_delimited_files(path=web_path)
+#print(ds.to_pandas_dataframe().dropna())
 
 x, y = clean_data(ds)
 
 # TODO: Split data into train and test sets.
 
-### YOUR CODE HERE ###a
+train_model_folder = './scripts/trainmodel'
+
+# train and test splits output
+output_split_train = PipelineData("output_split_train", datastore=default_store).as_dataset()
+output_split_test = PipelineData("output_split_test", datastore=default_store).as_dataset()
+
+print('Data spilt script is in {}.'.format(os.path.realpath(train_model_folder)))
+
+# test train split step creation
+# See the train_test_split.py for details about input and output
+testTrainSplitStep = PythonScriptStep(
+    name="Train Test Data Split",
+    script_name="train_test_split.py", 
+    arguments=["--output_split_train", output_split_train,
+               "--output_split_test", output_split_test],
+    inputs=[transformed_data.parse_parquet_files()],
+    outputs=[output_split_train, output_split_test],
+    compute_target=aml_compute,
+    runconfig = aml_run_config,
+    source_directory=train_model_folder,
+    allow_reuse=True
+)
+
+print("testTrainSplitStep created.")
 
 run = Run.get_context()
 
@@ -49,7 +74,6 @@ def clean_data(data):
     x_df["poutcome"] = x_df.poutcome.apply(lambda s: 1 if s == "success" else 0)
 
     y_df = x_df.pop("y").apply(lambda s: 1 if s == "yes" else 0)
-    
 
 def main():
     # Add arguments to script
