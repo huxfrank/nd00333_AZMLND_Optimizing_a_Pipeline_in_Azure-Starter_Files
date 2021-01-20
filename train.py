@@ -49,9 +49,8 @@ ds = TabularDatasetFactory.from_delimited_files(path=web_path)
 # TODO: Split data into train and test sets.
 # train and test splits output
 
-train, test = ds.random_split(percentage = 0.8, seed =1)
-x_train, y_train = clean_data(train)
-x_test, y_test = clean_data(test)
+x , y = clean_data(ds)
+x_train, x_test, y_train, y_test = train_test_split(x,y)
 
 # test train split step creation
 #/ See the train_test_split.py for details about input and output
