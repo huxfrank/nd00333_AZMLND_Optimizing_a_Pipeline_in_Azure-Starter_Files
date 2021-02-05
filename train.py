@@ -52,22 +52,6 @@ ds = TabularDatasetFactory.from_delimited_files(path=web_path)
 x , y = clean_data(ds)
 x_train, x_test, y_train, y_test = train_test_split(x,y)
 
-# test train split step creation
-#/ See the train_test_split.py for details about input and output
-#testTrainSplitStep = PythonScriptStep(
-#    name="Train Test Data Split",
-#    script_name="train_test_split.py", 
-#    arguments=["--output_split_train", train,
-#               "--output_split_test", test],
-#    inputs=[transformed_data.parse_parquet_files()],
-#    outputs=[output_split_train, output_split_test],
-#    compute_target=aml_compute,
-#    runconfig = aml_run_config,
-#    source_directory=train_model_folder,
-#    allow_reuse=True
-#)
-#print("testTrainSplitStep created.")
-
 run = Run.get_context()
 
 def main():
