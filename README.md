@@ -1,11 +1,11 @@
 # Optimizing an ML Pipeline in Azure
 # Table of Contents
 1. [Overview]{#overview}
-2. [Summary] (#summary)
-3. [Scikit-Learn Pipeline] (#sklpipeline)
-4. [AutoML] (#auotml)
-5. [Pipeline Comparison] (#pipeline-compare)
-6. [Future Work] (#future-work)
+2. [Summary](#summary)
+3. [Scikit-Learn Pipeline](#sklpipeline)
+4. [AutoML](#auotml)
+5. [Pipeline Comparison](#pipeline-compare)
+6. [Future Work](#future-work)
  
 ## Overview <a name="overview" />
 This project is part of the Udacity Azure ML Nanodegree.
